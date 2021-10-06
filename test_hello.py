@@ -7,3 +7,6 @@ def test_hello():
 
     assert response.status_code == 200
     assert response.data == b'This is Devops Assignment - Bits Pilani!'
+
+def test():
+    pass
