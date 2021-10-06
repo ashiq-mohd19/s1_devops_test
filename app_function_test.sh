@@ -1,6 +1,6 @@
 #!/bin/sh
 app_health=$(curl --silent http://localhost:5000)
-$app_health
+echo $app_health
 if [ "$app_health" == "This is Devops Assignment - Bits Pilani!" ]
 then 
 	echo "Application health is OK!"
