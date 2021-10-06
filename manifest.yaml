@@ -5,4 +5,4 @@ metadata:
 spec:
   containers:
   - name: helloapp
-	  image: srinijakammari/devops:latest
+    image: srinijakammari/devops:latest
