@@ -1,4 +1,7 @@
 pipeline {
+    environment{
+        dockerImage = ''
+    }
     agent any
     stages {
         stage('CodeCheckout') {
@@ -11,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'cd %WORKSPACE%'
-                bat 'C:\Users\user1\Downloads\python-3.10.0-embed-amd64\python.exe -m compileall application.py test_hello.py'
+                bat 'python.exe -m compileall application.py test_hello.py'
             }
         } 
         
@@ -20,15 +23,29 @@ pipeline {
                 bat 'cd %WORKSPACE%'
                 bat 'py.test'
                 bat 'rmdir  /S /Q  __pycache__ .pytest_cache'
-                bat 'docker build --tag helloapp:%BUILD_NUMBER% .'
+                
             }
         }
         
-        stage('Deploy-NonProd') {
-            steps {
-                bat 'docker run -d helloapp:%BUILD_NUMBER%'
+        stage('Build-Docker-Image') {
+            steps{
+                script{
+                        
+                        withCredentials([usernamePassword( credentialsId: 'sk-dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) 
+                        {
+                                bat 'docker login --username %USERNAME% --password %PASSWORD%'
+                                dockerImage = docker.build("srinijakammari/devops") 
+                                docker.withRegistry('https://registry.hub.docker.com', 'sk-dockerhub') {
+                                    bat "docker login -u %USERNAME% -p %PASSWORD%"
+                                    dockerImage.push("$BUILD_NUMBER")
+                                    dockerImage.push("latest")
+                                }
+                        }
+                    }
             }
         }
+        
+        
         
     }
 }
