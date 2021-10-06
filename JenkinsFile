@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    stages {
+        stage('CodeCheckout') {
+            steps {
+                // Get some code from a GitHub repository
+                checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ashiq-mohd19/s1_devops_test.git']]]
+
+            }
+        }
+        stage('Build') {
+            steps {
+                bat 'cd %WORKSPACE%'
+                bat 'python.exe -m compileall application.py test_hello.py'
+            }
+        } 
+        
+        stage('Test') {
+            steps {
+                bat 'cd %WORKSPACE%'
+                bat 'py.test'
+                bat 'rmdir  /S /Q  __pycache__ .pytest_cache'
+                bat 'docker build --tag helloapp:%BUILD_NUMBER% .'
+            }
+        }
+        
+        stage('Deploy-NonProd') {
+            steps {
+                bat 'docker run -d helloapp:%BUILD_NUMBER%'
+            }
+        }
+        
+    }
+}
+
