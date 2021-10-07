@@ -7,7 +7,9 @@ pipeline {
         LOCATION = 'us-west4-b'
         CREDENTIALS_ID = 'My First Project'
     }
-    agent any
+    agent {
+        label 'docker-instance'
+    }
     stages {
         stage('CodeCheckout') {
             steps {
