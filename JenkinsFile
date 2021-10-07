@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('CodeCheckout') {
+        stage('Code Checkout') {
             steps {
                 // Get some code from a GitHub repository
                 checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ashiq-mohd19/s1_devops_test.git']]]
