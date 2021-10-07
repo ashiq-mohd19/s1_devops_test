@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'cd %WORKSPACE%'
-                bat 'C:\Users\user1\Downloads\python-3.10.0-embed-amd64\python.exe -m compileall application.py test_hello.py'
+                bat 'python.exe -m compileall application.py test_hello.py'
             }
         } 
         
