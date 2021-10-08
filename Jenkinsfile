@@ -22,17 +22,17 @@ pipeline {
         stage('Build') {
             steps {
                 //Compiling the python code
-                bat 'cd %WORKSPACE%'
-                bat 'python.exe -m compileall application.py test_hello.py'
+                sh 'cd %WORKSPACE%'
+                sh 'python.exe -m compileall application.py test_hello.py'
             }
         } 
         
         stage('Test') {
             steps {
                 //Running unit tests
-                bat 'cd %WORKSPACE%'
-                bat 'py.test'
-                bat 'rmdir  /S /Q  __pycache__ .pytest_cache'
+                sh 'cd %WORKSPACE%'
+                sh 'py.test'
+                sh 'rm -rf __pycache__ .pytest_cache'
                 
             }
         }
@@ -43,7 +43,7 @@ pipeline {
                         // Building and pushing the docker image to repo
                         withCredentials([usernamePassword( credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) 
                         {
-                                bat 'docker login --username %USERNAME% --password %PASSWORD%'
+                                sh 'docker login --username %USERNAME% --password %PASSWORD%'
                                 dockerImage = docker.build("srinijakammari/devops") 
                                 docker.withRegistry('', 'dockerhub') {
                                     bat "docker login -u %USERNAME% -p %PASSWORD%"
@@ -58,7 +58,7 @@ pipeline {
         stage('Deploy_NonProd'){
             steps{
                     //Running container in local env
-                    bat 'docker run --name helloapp%BUILD_NUMBER% -d srinijakammari/devops:latest'
+                    sh 'docker run --name helloapp%BUILD_NUMBER% -d srinijakammari/devops:latest'
             }
            
         }
@@ -66,9 +66,9 @@ pipeline {
         stage('App_health_check'){
             steps{
                     //Validating the deployment of container
-                    bat 'dos2unix app_function_test.sh'
-                    bat 'docker cp app_function_test.sh  helloapp%BUILD_NUMBER%:./app_function_test.sh'
-                    bat 'docker exec helloapp%BUILD_NUMBER% /bin/bash -c "bash /app_function_test.sh"'
+                    //bat 'dos2unix app_function_test.sh'
+                    sh 'docker cp app_function_test.sh  helloapp%BUILD_NUMBER%:./app_function_test.sh'
+                    sh 'docker exec helloapp%BUILD_NUMBER% /bin/bash -c "bash /app_function_test.sh"'
             }
         }
         
