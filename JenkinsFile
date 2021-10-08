@@ -11,7 +11,7 @@ pipeline {
         label 'docker-instance'
     }
     stages {
-        stage('CodeCheckout') {
+        stage('Code Checkout') {
             steps {
                 // Get some code from a GitHub repository
                 cleanWs()
