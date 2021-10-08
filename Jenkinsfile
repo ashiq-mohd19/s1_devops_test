@@ -43,12 +43,12 @@ pipeline {
                         // Building and pushing the docker image to repo
                         withCredentials([usernamePassword( credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) 
                         {
-                                sh 'sudo docker login --username $USERNAME --password $PASSWORD'
-                                dockerImage = 'sudo docker.build("srinijakammari/devops")'
-                                sudo docker.withRegistry('', 'dockerhub') {
-                                    sh 'sudo docker login -u $USERNAME -p $PASSWORD'
-                                    sudo dockerImage.push("$BUILD_NUMBER")
-                                    sudo dockerImage.push("latest")
+                                sh 'docker login --username $USERNAME --password $PASSWORD'
+                                dockerImage = 'docker.build("srinijakammari/devops")'
+                                docker.withRegistry('', 'dockerhub') {
+                                    sh 'docker login -u $USERNAME -p $PASSWORD'
+                                    dockerImage.push("$BUILD_NUMBER")
+                                    dockerImage.push("latest")
                                 }
                         }
                     }
