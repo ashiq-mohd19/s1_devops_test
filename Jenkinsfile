@@ -46,7 +46,7 @@ pipeline {
                                 sh 'sudo docker login --username $USERNAME --password $PASSWORD'
                                 dockerImage = 'sudo docker.build("srinijakammari/devops")'
                                 sudo docker.withRegistry('', 'dockerhub') {
-                                    sh "sudo docker login -u $USERNAME -p $PASSWORD"
+                                    sh 'sudo docker login -u $USERNAME -p $PASSWORD'
                                     sudo dockerImage.push("$BUILD_NUMBER")
                                     sudo dockerImage.push("latest")
                                 }
