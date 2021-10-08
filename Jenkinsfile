@@ -31,7 +31,7 @@ pipeline {
             steps {
                 //Running unit tests
                 sh 'cd $WORKSPACE'
-                sh 'py.test'
+                sh 'python3 -m pytest'
                 sh 'rm -rf __pycache__ .pytest_cache'
                 
             }
