@@ -44,7 +44,7 @@ pipeline {
                         withCredentials([usernamePassword( credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) 
                         {
                                 sh 'docker login --username $USERNAME --password $PASSWORD'
-                                dockerImage = 'docker.build("srinijakammari/devops")'
+                                dockerImage = docker.build("srinijakammari/devops")
                                 docker.withRegistry('', 'dockerhub') {
                                     sh 'docker login -u $USERNAME -p $PASSWORD'
                                     dockerImage.push("$BUILD_NUMBER")
