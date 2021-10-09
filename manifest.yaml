@@ -17,3 +17,16 @@ spec:
       containers:
       - name: helloapp
         image: srinijakammari/devops:latest
+        
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloappbitsdevops-service
+spec:
+  selector:
+    app: helloapp
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 5000
+  type: LoadBalancer
