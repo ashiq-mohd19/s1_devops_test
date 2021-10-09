@@ -15,7 +15,7 @@ pipeline {
             steps {
                 // Get some code from a GitHub repository
                 cleanWs()
-                checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/betadeploy']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ashiq-mohd19/s1_devops_test.git']]]
+                checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ashiq-mohd19/s1_devops_test.git']]]
 
             }
         }
