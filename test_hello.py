@@ -8,5 +8,14 @@ def test_hello():
     assert response.status_code == 200
     assert response.data == b'This is Devops Assignment - Bits Pilani!'
 
-def test():
+def test_1():
+    pass
+
+def test_2():
+    pass
+
+def test_3():
+    pass
+
+def test_4():
     pass
