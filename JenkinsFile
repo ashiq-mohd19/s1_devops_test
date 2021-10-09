@@ -85,6 +85,19 @@ pipeline {
                 verifyDeployments: true])
             }
         }
+        stage('Port_forwarding'){
+            steps{
+                //Deploying the container in GKE cluster
+                step([
+                $class: 'KubernetesEngineBuilder',
+                projectId: env.PROJECT_ID,
+                clusterName: env.CLUSTER_NAME,
+                location: env.LOCATION,
+                manifestPattern: 'service.yaml',
+                credentialsId: env.CREDENTIALS_ID,
+                verifyDeployments: true])
+            }
+        }
     }
 }
 
